@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-from scipy.signal import savgol_filter #to smooth the noisy data inorder to create a readable graph)
+from scipy.signal import savgol_filter #to smooth the noisy data inorder to create a readable graph
 
 P0, T0, g, L, R = 101325, 288.15, 9.80665, 0.0065, 287.05
 
@@ -24,7 +24,9 @@ fig, (ax1, ax2) = plt.subplots(2, 1)#plots two graphs one above the other, hence
 
 line1, = ax1.plot([], [], 'b')
 ax1.set_xlim(0, len(time) - 1)  
-ax1.set_ylim(min(alt_smooth), max(alt_smooth)) 
+ax1.set_ylim(min(alt_smooth), max(alt_smooth))
+ax1.set_xlabel('Time (s)')
+ax1.set_ylabel('Altitude (m)')
 
 line2, = ax2.plot([], [], 'r')
 ax2.set_xlim(0, len(time) - 1)
