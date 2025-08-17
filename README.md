@@ -1,5 +1,5 @@
-# JANUS-inductions-
-JANUS avionics task submission - Niva
+# JANUS-inductions- Niva Barde - 2025AARM2209H
+JANUS avionics task submission - Niva 
 
 Task1 - Avionics 
 This repository contains the solutions for the JANUS avionics tasks. It includes Python scripts to analyze pressure data, calculate altitude and velocity, and generate animations.
