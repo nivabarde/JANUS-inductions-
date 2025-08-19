@@ -1,0 +1,63 @@
+
+// Pins
+const int forceSensorPin = A0;
+const int ledAscend = 5;//blue led
+const int ledApogee = 6;//red led
+const int ledDescend = 7;//green led
+const int buzzerPin = 8;
+
+// Parameters
+const int numReadings = 20; //no of readings for averaging data 
+int readings[numReadings]; //storing readings
+int readIndex = 0; //current index
+long total = 0; //sum of the readings 
+int average = 0; //current average of the readings 
+int prevAverage = 0; //previous average
+
+enum State {ASCENDING, APOGEE, DESCENDING};
+State deviceState = ASCENDING;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(ledAscend, OUTPUT);
+  pinMode(ledApogee, OUTPUT);
+  pinMode(ledDescend, OUTPUT);
+  pinMode(buzzerPin, OUTPUT);
+
+  for (int i = 0; i < numReadings; i++) readings[i] = 0; // zero buffer
+} //setting the readings to zero
+
+void loop() {
+  // Smoothing: rolling average
+  total -= readings[readIndex]; //subtracting the oldest reading from total
+  readings[readIndex] = analogRead(forceSensorPin); //intake new reading
+  total += readings[readIndex];//add the new reading 
+  readIndex = (readIndex + 1) % numReadings;
+  average = total / numReadings; //calculate average force value 
+
+  // Calculate change from previous average
+  int delta = average - prevAverage;
+  int threshold = 5; // Tune this value based on sensor noise
+
+  // State machine
+  if (delta > threshold) {
+    deviceState = ASCENDING;
+  } else if (abs(delta) <= threshold) {
+    deviceState = APOGEE;
+  } else if (delta < -threshold) {
+    deviceState = DESCENDING;
+  }
+
+  // LEDs & Buzzer Actions
+  digitalWrite(ledAscend, deviceState == ASCENDING ? HIGH : LOW);
+  digitalWrite(ledApogee, deviceState == APOGEE ? HIGH : LOW);
+  digitalWrite(ledDescend, deviceState == DESCENDING ? HIGH : LOW);
+
+  if (deviceState == APOGEE && prevAverage != average) {
+    tone(buzzerPin, 2000, 500); // Buzzer for 500ms at 2kHz
+  }
+
+  prevAverage = average;
+
+  delay(100); // 100ms loop time, adjust as needed for your sampling rate
+}
