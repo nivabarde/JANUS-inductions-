@@ -9,7 +9,7 @@ Task1 - Avionics
 5) Dependancies installed - pandas, numpy, scipy, matplotlib
 6) Also used functions like intrapolate and errors to ignore the non numeric values and convert them into NaNs.
 
-TAsk2-Avionics 
+Task2-Avionics 
 1) Used a moving average to smooth noisy force sensor data.
 2) Calculated pressure by dividing force by surface area (0.01 m²).
 3) Determined state by tracking if pressure is rising (descending), falling (ascending), or stable (at apogee).
